@@ -1,0 +1,33 @@
+<main class="container my-5">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h2>Gestión de Citas</h2>
+        <a href="index.html" class="btn btn-outline-secondary btn-sm">Volver al Inicio</a>
+    </div>
+    
+    <div class="alert alert-warning">Sección en construcción: Calendario y Expedientes.</div>
+
+    <div class="card shadow-sm p-4" style="border-radius: 40px;">
+        <h3 class="text-center mb-4">Nueva Cita Veterinaria</h3>
+        <form id="formCitas">
+            <div class="row g-3">
+                <div class="col-md-12">
+                    <label>Seleccionar Paciente</label>
+                    <select id="select_mascota" class="form-control" required>
+                        <option value="">Buscar mascota...</option>
+                    </select>
+                </div>
+                <div class="col-md-6">
+                    <label>Fecha</label>
+                    <input type="date" id="fecha_cita" class="form-control" required>
+                </div>
+                <div class="col-md-6">
+                    <label>Hora</label>
+                    <input type="time" id="hora_cita" class="form-control" required>
+                </div>
+                <div class="col-12 text-center mt-4">
+                    <button type="submit" class="btn btn-primary px-5 shadow-sm">Agendar Cita</button>
+                </div>
+            </div>
+        </form>
+    </div>
+</main>

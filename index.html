@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vet-Care | Panel de Gestión</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="css/style.css">
+</head>
+
+<body>
+
+    <nav class="navbar navbar-expand-lg sticky-top py-3">
+        <div class="container">
+            <a class="navbar-brand d-flex align-items-center" href="index.html">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 380 100" height="36" style="margin-right:6px;">
+    <circle cx="50" cy="50" r="44" fill="#4a9b7f"/>
+    <rect x="38" y="22" width="24" height="56" rx="7" fill="white"/>
+    <rect x="22" y="38" width="56" height="24" rx="7" fill="white"/>
+    <ellipse cx="50" cy="52" rx="9" ry="7" fill="#4a9b7f"/>
+    <ellipse cx="37" cy="42" rx="5" ry="4" fill="#4a9b7f"/>
+    <ellipse cx="46" cy="37" rx="5" ry="4" fill="#4a9b7f"/>
+    <ellipse cx="56" cy="37" rx="5" ry="4" fill="#4a9b7f"/>
+    <ellipse cx="65" cy="42" rx="5" ry="4" fill="#4a9b7f"/>
+    <text x="112" y="60" font-family="Georgia,serif" font-size="42" font-weight="700" fill="#1e2d27">Vet-Care</text>
+    <text x="113" y="80" font-family="Arial,sans-serif" font-size="11" fill="#6b7f76" letter-spacing="3.5">CLÍNICA VETERINARIA</text>
+    <line x1="113" y1="87" x2="358" y2="87" stroke="#d4e8df" stroke-width="1.5" stroke-linecap="round"/>
+</svg>
+            </a>
+            <button class="navbar-toggler border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item"><a class="nav-link px-3" href="index.html">Inicio</a></li>
+                    <li class="nav-item"><a class="nav-link px-3" href="duenos.html">Dueños</a></li>
+                    <li class="nav-item"><a class="nav-link px-3" href="mascotas.html">Mascotas</a></li>
+                    <li class="nav-item"><a class="nav-link px-3" href="citas.html">Citas</a></li>
+                    <li class="nav-item"><a class="nav-link px-3" href="expediente.html">Expedientes</a></li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <main class="container py-5">
+        <header class="row mb-5 align-items-center">
+            <div class="col-lg-6">
+                <h1 class="display-4 mb-3">Cuidado profesional para tus <span style="color: var(--color-primario);">mejores amigos</span>.</h1>
+                <p class="lead text-muted mb-4">Gestión simplificada de pacientes, expedientes y citas en un solo lugar.</p>
+                <div class="d-flex gap-3">
+                    <a href="duenos.html" class="btn btn-primary shadow-sm">Nuevo Registro</a>
+                    <a href="citas.html" class="btn btn-outline-dark rounded-pill px-4">Ver Agenda</a>
+                </div>
+            </div>
+            <div class="col-lg-6 d-none d-lg-block text-center">
+                <div style="background: var(--color-primario); width: 350px; height: 450px; border-radius: 175px 175px 0 0; margin: 0 auto; overflow: hidden;">
+                     <img src="https://images.unsplash.com/photo-1583337130417-3346a1be7dee?auto=format&fit=crop&q=80&w=400" alt="Mascota" class="w-100 h-100" style="object-fit: cover;">
+                </div>
+            </div>
+        </header>
+
+        <section class="row justify-content-center mt-5">
+            <div class="col-lg-10">
+                <div class="card shadow-lg p-5" style="border-radius: 60px;">
+                    <div class="card-body text-center">
+                        <h2 class="mb-4">Centro de Gestión</h2>
+                        
+                        <ul class="nav nav-pills justify-content-center mb-5" id="pills-tab" role="tablist">
+                            <li class="nav-item" role="presentation">
+                                <button class="nav-link active rounded-pill px-4 me-2" data-bs-toggle="pill" data-bs-target="#pills-duenos">Dueños</button>
+                            </li>
+                            <li class="nav-item" role="presentation">
+                                <button class="nav-link rounded-pill px-4 me-2" data-bs-toggle="pill" data-bs-target="#pills-mascotas">Mascotas</button>
+                            </li>
+                            <li class="nav-item" role="presentation">
+                                <button class="nav-link rounded-pill px-4 me-2" data-bs-toggle="pill" data-bs-target="#pills-citas">Citas</button>
+                            </li>
+                            <li class="nav-item" role="presentation">
+                                <button class="nav-link rounded-pill px-4" data-bs-toggle="pill" data-bs-target="#pills-expediente">Expedientes</button>
+                            </li>
+                        </ul>
+
+                        <div class="tab-content" id="pills-tabContent">
+                            <div class="tab-pane fade show active" id="pills-duenos">
+                                <p class="text-muted">Administra la base de datos de propietarios y sus contactos.</p>
+                                <a href="duenos.html" class="btn btn-primary btn-lg shadow-sm">Abrir Registro de Dueños</a>
+                            </div>
+                            
+                            <div class="tab-pane fade" id="pills-mascotas">
+                                <p class="text-muted">Accede a registros de pacientes y razas.</p>
+                                <a href="mascotas.html" class="btn btn-primary btn-lg shadow-sm">Ver Listado de Mascotas</a>
+                            </div>
+                            
+                            <div class="tab-pane fade" id="pills-citas">
+                                <p class="text-muted">Organiza el calendario de consultas y vacunaciones.</p>
+                                <a href="citas.html" class="btn btn-primary btn-lg shadow-sm">Gestionar Agenda</a>
+                            </div>
+
+                            <div class="tab-pane fade" id="pills-expediente">
+                                <p class="text-muted">Consulta el historial clínico detallado de cada mascota.</p>
+                                <a href="expediente.html" class="btn btn-primary btn-lg shadow-sm">Ver Historial Médico</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section> 
+    </main>
+
+    <footer class="py-5">
+        <div class="container text-center">
+            <p class="text-muted mb-0 small">&copy; 2026 Vet-Care Clínica Veterinaria</p>
+            <p class="text-muted small">El Roble, Puntarenas</p>
+        </div>
+    </footer>
+</body>
+</html>

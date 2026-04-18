@@ -1,0 +1,355 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vet-Care | Iniciar Sesión</title>
+    <style>
+        /* Fuentes del sistema — no necesitan internet */
+        :root {
+            --verde:       #4a9b7f;
+            --verde-dark:  #357a62;
+            --texto:       #1e2d27;
+            --texto-suave: #6b7f76;
+            --borde:       #d4e8df;
+            --blanco:      #ffffff;
+        }
+
+        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+        body {
+            font-family: 'Segoe UI', Arial, sans-serif;
+            min-height: 100vh;
+            display: flex;
+            overflow: hidden;
+        }
+
+        /* ── Panel izquierdo ── */
+        .panel-deco {
+            flex: 1;
+            background: linear-gradient(160deg, #357a62 0%, #4a9b7f 60%, #6bbda0 100%);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 3rem;
+            position: relative;
+            overflow: hidden;
+        }
+        .panel-deco::before {
+            content: '';
+            position: absolute;
+            width: 420px; height: 420px;
+            border-radius: 50%;
+            background: rgba(255,255,255,0.06);
+            top: -80px; left: -80px;
+        }
+        .panel-deco::after {
+            content: '';
+            position: absolute;
+            width: 300px; height: 300px;
+            border-radius: 50%;
+            background: rgba(255,255,255,0.07);
+            bottom: -60px; right: -60px;
+        }
+        .deco-circle-mid {
+            position: absolute;
+            width: 200px; height: 200px;
+            border-radius: 50%;
+            background: rgba(255,255,255,0.05);
+            bottom: 120px; left: 40px;
+        }
+        .deco-blob {
+            width: 240px; height: 300px;
+            border-radius: 120px 120px 0 0;
+            overflow: hidden;
+            box-shadow: 0 24px 64px rgba(0,0,0,0.25);
+            z-index: 1;
+            margin-bottom: 2rem;
+            animation: flotar 4s ease-in-out infinite;
+        }
+        .deco-blob img { width: 100%; height: 100%; object-fit: cover; }
+
+        @keyframes flotar {
+            0%, 100% { transform: translateY(0); }
+            50%       { transform: translateY(-10px); }
+        }
+
+        .deco-texto { z-index: 1; text-align: center; color: white; }
+        .deco-texto h2 {
+            font-family: Georgia, 'Times New Roman', serif;
+            font-size: 1.8rem; font-weight: 700;
+            margin-bottom: 0.5rem; line-height: 1.25;
+        }
+        .deco-texto p { font-size: 0.9rem; opacity: 0.8; }
+
+        /* ── Panel derecho ── */
+        .panel-form {
+            width: 460px; min-width: 360px;
+            background: var(--blanco);
+            display: flex; align-items: center; justify-content: center;
+            padding: 3rem 2.5rem;
+            overflow-y: auto;
+        }
+        .form-inner {
+            width: 100%;
+            animation: slideIn 0.5s ease both;
+        }
+        @keyframes slideIn {
+            from { opacity: 0; transform: translateX(20px); }
+            to   { opacity: 1; transform: translateX(0); }
+        }
+
+        .form-subtitle {
+            font-size: 0.82rem;
+            color: var(--texto-suave);
+            margin-top: 4px;
+            margin-bottom: 2rem;
+        }
+        .form-inner h1 {
+            font-family: Georgia, 'Times New Roman', serif;
+            font-size: 2rem; font-weight: 700;
+            color: var(--texto); line-height: 1.2;
+            margin-bottom: 0.4rem;
+        }
+        .form-intro { font-size: 0.88rem; color: var(--texto-suave); margin-bottom: 2rem; }
+
+        label {
+            font-size: 0.82rem; font-weight: 600;
+            color: var(--texto); display: block;
+            margin-bottom: 6px; letter-spacing: 0.3px;
+        }
+
+        .input-wrap { position: relative; margin-bottom: 1.4rem; }
+        .input-icon {
+            position: absolute; left: 14px; top: 50%;
+            transform: translateY(-50%);
+            font-size: 1rem; pointer-events: none;
+        }
+
+        input[type="text"],
+        input[type="password"] {
+            width: 100%;
+            padding: 11px 14px 11px 40px;
+            border: 1.5px solid var(--borde);
+            border-radius: 999px;
+            font-family: 'Segoe UI', Arial, sans-serif;
+            font-size: 0.92rem; color: var(--texto);
+            background: var(--blanco);
+            transition: border-color 0.25s, box-shadow 0.25s;
+            outline: none;
+        }
+        input:focus {
+            border-color: var(--verde);
+            box-shadow: 0 0 0 3px rgba(74,155,127,0.18);
+        }
+        input.error-input {
+            border-color: #e05252;
+            box-shadow: 0 0 0 3px rgba(224,82,82,0.15);
+        }
+        input::placeholder { color: #b0c4bb; }
+
+        .campo-error {
+            font-size: 0.78rem; color: #e05252;
+            margin-top: 5px; padding-left: 12px; display: none;
+        }
+        .campo-error.visible { display: block; }
+
+        .toggle-pass {
+            position: absolute; right: 14px; top: 50%;
+            transform: translateY(-50%);
+            background: none; border: none; cursor: pointer;
+            font-size: 1rem; color: var(--texto-suave); padding: 0;
+            transition: color 0.2s;
+        }
+        .toggle-pass:hover { color: var(--verde); }
+
+        .alert-error {
+            background: #fde8e8; color: #8a1a1a;
+            border-radius: 999px; padding: 10px 18px;
+            font-size: 0.85rem; font-weight: 500;
+            margin-bottom: 1.25rem;
+            display: none; align-items: center; gap: 8px;
+        }
+        .alert-error.visible { display: flex; }
+
+        .btn-login {
+            width: 100%; padding: 12px;
+            background: var(--verde); color: white;
+            border: none; border-radius: 999px;
+            font-family: 'Segoe UI', Arial, sans-serif;
+            font-size: 0.95rem; font-weight: 600;
+            cursor: pointer; margin-top: 0.5rem;
+            transition: background 0.25s, transform 0.2s, box-shadow 0.25s;
+            box-shadow: 0 4px 16px rgba(74,155,127,0.3);
+        }
+        .btn-login:hover {
+            background: var(--verde-dark);
+            transform: translateY(-2px);
+            box-shadow: 0 8px 24px rgba(74,155,127,0.35);
+        }
+        .btn-login:active { transform: scale(0.98); }
+
+        .form-footer {
+            text-align: center; margin-top: 2rem;
+            font-size: 0.8rem; color: var(--texto-suave);
+        }
+
+        /* ── Responsive ── */
+        @media (max-width: 768px) {
+            body { flex-direction: column; overflow: auto; }
+            .panel-deco { flex: none; padding: 2.5rem 1.5rem; min-height: 260px; }
+            .deco-blob { width: 150px; height: 185px; border-radius: 75px 75px 0 0; margin-bottom: 1rem; }
+            .deco-texto h2 { font-size: 1.3rem; }
+            .panel-form { width: 100%; min-width: unset; padding: 2rem 1.5rem 3rem; }
+        }
+        @media (max-width: 480px) {
+            .panel-deco { min-height: 200px; }
+            .deco-blob { width: 110px; height: 140px; border-radius: 55px 55px 0 0; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- ── Panel izquierdo ── -->
+    <div class="panel-deco">
+        <div class="deco-circle-mid"></div>
+
+        <!-- Logo blanco incrustado -->
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 380 100" width="210" style="z-index:1;margin-bottom:1.75rem;flex-shrink:0;">
+            <circle cx="50" cy="50" r="44" fill="rgba(255,255,255,0.2)"/>
+            <rect x="38" y="22" width="24" height="56" rx="7" fill="white"/>
+            <rect x="22" y="38" width="56" height="24" rx="7" fill="white"/>
+            <ellipse cx="50" cy="52" rx="9" ry="7" fill="rgba(255,255,255,0.2)"/>
+            <ellipse cx="37" cy="42" rx="5" ry="4" fill="rgba(255,255,255,0.2)"/>
+            <ellipse cx="46" cy="37" rx="5" ry="4" fill="rgba(255,255,255,0.2)"/>
+            <ellipse cx="56" cy="37" rx="5" ry="4" fill="rgba(255,255,255,0.2)"/>
+            <ellipse cx="65" cy="42" rx="5" ry="4" fill="rgba(255,255,255,0.2)"/>
+            <text x="112" y="60" font-family="Georgia,serif" font-size="42" font-weight="700" fill="white">Vet-Care</text>
+            <text x="113" y="80" font-family="Arial,sans-serif" font-size="11" fill="rgba(255,255,255,0.75)" letter-spacing="3.5">CLÍNICA VETERINARIA</text>
+            <line x1="113" y1="87" x2="358" y2="87" stroke="rgba(255,255,255,0.3)" stroke-width="1.5" stroke-linecap="round"/>
+        </svg>
+
+        <div class="deco-blob">
+            <img src="https://images.unsplash.com/photo-1537151608828-ea2b11777ee8?auto=format&fit=crop&q=80&w=400" alt="Mascota">
+        </div>
+
+        <div class="deco-texto">
+            <h2>Cuidamos a quienes<br>más querés.</h2>
+            <p>Sistema de gestión veterinaria</p>
+        </div>
+    </div>
+
+    <!-- ── Panel formulario ── -->
+    <div class="panel-form">
+        <div class="form-inner">
+
+            <!-- Logo color incrustado -->
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 380 100" width="210" style="margin-bottom:4px;">
+                <circle cx="50" cy="50" r="44" fill="#4a9b7f"/>
+                <rect x="38" y="22" width="24" height="56" rx="7" fill="white"/>
+                <rect x="22" y="38" width="56" height="24" rx="7" fill="white"/>
+                <ellipse cx="50" cy="52" rx="9" ry="7" fill="#4a9b7f"/>
+                <ellipse cx="37" cy="42" rx="5" ry="4" fill="#4a9b7f"/>
+                <ellipse cx="46" cy="37" rx="5" ry="4" fill="#4a9b7f"/>
+                <ellipse cx="56" cy="37" rx="5" ry="4" fill="#4a9b7f"/>
+                <ellipse cx="65" cy="42" rx="5" ry="4" fill="#4a9b7f"/>
+                <text x="112" y="60" font-family="Georgia,serif" font-size="42" font-weight="700" fill="#1e2d27">Vet-Care</text>
+                <text x="113" y="80" font-family="Arial,sans-serif" font-size="11" fill="#6b7f76" letter-spacing="3.5">CLÍNICA VETERINARIA</text>
+                <line x1="113" y1="87" x2="358" y2="87" stroke="#d4e8df" stroke-width="1.5" stroke-linecap="round"/>
+            </svg>
+            <p class="form-subtitle">El Roble, Puntarenas</p>
+
+            <h1>Bienvenido<br>de nuevo.</h1>
+            <p class="form-intro">Ingresá tus datos para continuar.</p>
+
+            <div class="alert-error" id="alertError">
+                <span>⚠️</span> Usuario o contraseña incorrectos.
+            </div>
+
+            <form id="formLogin" novalidate>
+
+                <label for="usuario">Usuario</label>
+                <div class="input-wrap">
+                    <span class="input-icon">👤</span>
+                    <input type="text" id="usuario" placeholder="Ingrese su usuario" autocomplete="username">
+                    <p class="campo-error" id="err-usuario">El usuario es obligatorio.</p>
+                </div>
+
+                <label for="contrasena">Contraseña</label>
+                <div class="input-wrap">
+                    <span class="input-icon">🔒</span>
+                    <input type="password" id="contrasena" placeholder="••••••••" autocomplete="current-password">
+                    <button type="button" class="toggle-pass" id="togglePass" aria-label="Mostrar contraseña">👁️</button>
+                    <p class="campo-error" id="err-contrasena">La contraseña es obligatoria.</p>
+                </div>
+
+                <button type="submit" class="btn-login">Iniciar Sesión</button>
+
+            </form>
+
+            <p class="form-footer">© 2026 Vet-Care · Clínica Veterinaria</p>
+        </div>
+    </div>
+
+    <script>
+        // Mostrar / ocultar contraseña
+        document.getElementById('togglePass').addEventListener('click', function () {
+            const input = document.getElementById('contrasena');
+            const visible = input.type === 'text';
+            input.type = visible ? 'password' : 'text';
+            this.textContent = visible ? '👁️' : '🙈';
+        });
+
+        // Credenciales por defecto en LocalStorage
+        if (!localStorage.getItem('vc_usuarios')) {
+            localStorage.setItem('vc_usuarios', JSON.stringify([
+                { usuario: 'admin', contrasena: '1234' }
+            ]));
+        }
+
+        // Submit
+        document.getElementById('formLogin').addEventListener('submit', function (e) {
+            e.preventDefault();
+
+            const inputUsuario = document.getElementById('usuario');
+            const inputClave   = document.getElementById('contrasena');
+            const errUsuario   = document.getElementById('err-usuario');
+            const errClave     = document.getElementById('err-contrasena');
+            const alertError   = document.getElementById('alertError');
+            let valido = true;
+
+            [inputUsuario, inputClave].forEach(i => i.classList.remove('error-input'));
+            [errUsuario, errClave].forEach(el => el.classList.remove('visible'));
+            alertError.classList.remove('visible');
+
+            if (!inputUsuario.value.trim()) {
+                inputUsuario.classList.add('error-input');
+                errUsuario.classList.add('visible');
+                valido = false;
+            }
+            if (!inputClave.value.trim()) {
+                inputClave.classList.add('error-input');
+                errClave.classList.add('visible');
+                valido = false;
+            }
+            if (!valido) return;
+
+            const usuarios = JSON.parse(localStorage.getItem('vc_usuarios') || '[]');
+            const match = usuarios.find(
+                u => u.usuario === inputUsuario.value.trim() &&
+                     u.contrasena === inputClave.value
+            );
+
+            if (match) {
+                localStorage.setItem('vc_sesion', JSON.stringify({ usuario: match.usuario }));
+                window.location.href = 'index.html';
+            } else {
+                alertError.classList.add('visible');
+                inputClave.value = '';
+                inputClave.focus();
+            }
+        });
+    </script>
+</body>
+</html>
