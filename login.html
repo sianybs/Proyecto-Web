@@ -208,6 +208,7 @@
             .deco-blob { width: 110px; height: 140px; border-radius: 55px 55px 0 0; }
         }
     </style>
+    <script src="js/main.js"></script>
 </head>
 <body>
 
@@ -260,15 +261,17 @@
             </svg>
             <p class="form-subtitle">El Roble, Puntarenas</p>
 
-            <h1>Bienvenido<br>de nuevo.</h1>
-            <p class="form-intro">Ingresá tus datos para continuar.</p>
+            <!-- Título dinámico -->
+            <h1 id="formTitle">Bienvenido<br>de nuevo.</h1>
+            <p class="form-intro" id="formSubtitle">Ingresá tus datos para continuar.</p>
 
+            <!-- Alertas de error -->
             <div class="alert-error" id="alertError">
-                <span>⚠️</span> Usuario o contraseña incorrectos.
+                <span>⚠️</span> <span id="alertErrorMsg">Usuario o contraseña incorrectos.</span>
             </div>
 
-            <form id="formLogin" novalidate>
-
+            <!-- FORMULARIO DE LOGIN -->
+            <form id="formLogin" novalidate style="display: block;">
                 <label for="usuario">Usuario</label>
                 <div class="input-wrap">
                     <span class="input-icon">👤</span>
@@ -285,71 +288,51 @@
                 </div>
 
                 <button type="submit" class="btn-login">Iniciar Sesión</button>
-
             </form>
+
+            <!-- FORMULARIO DE REGISTRO -->
+            <form id="formRegistro" novalidate style="display: none;">
+                <label for="usuarioReg">Usuario</label>
+                <div class="input-wrap">
+                    <span class="input-icon">👤</span>
+                    <input type="text" id="usuarioReg" placeholder="Elige un usuario" autocomplete="username">
+                    <p class="campo-error" id="err-usuarioReg">El usuario es obligatorio.</p>
+                </div>
+
+                <label for="contrasenaReg">Contraseña</label>
+                <div class="input-wrap">
+                    <span class="input-icon">🔒</span>
+                    <input type="password" id="contrasenaReg" placeholder="••••••••" autocomplete="new-password">
+                    <button type="button" class="toggle-pass" id="togglePassReg" aria-label="Mostrar contraseña">👁️</button>
+                    <p class="campo-error" id="err-contrasenaReg">La contraseña es obligatoria.</p>
+                </div>
+
+                <label for="confirmarContrasena">Confirmar Contraseña</label>
+                <div class="input-wrap">
+                    <span class="input-icon">🔒</span>
+                    <input type="password" id="confirmarContrasena" placeholder="••••••••" autocomplete="new-password">
+                    <button type="button" class="toggle-pass" id="togglePassConfirmar" aria-label="Mostrar contraseña">👁️</button>
+                    <p class="campo-error" id="err-confirmarContrasena">Las contraseñas no coinciden.</p>
+                </div>
+
+                <button type="submit" class="btn-login">Crear Cuenta</button>
+            </form>
+
+            <!-- Botones para alternar entre login y registro -->
+            <div style="text-align: center; margin-top: 1.5rem; font-size: 0.85rem;">
+                <p id="toggleText">¿No tienes cuenta? <button type="button" id="btnToggleFormulario" style="background: none; border: none; color: #4a9b7f; cursor: pointer; text-decoration: underline; font-weight: 600; transition: color 0.2s;" onmouseover="this.style.color='#357a62'" onmouseout="this.style.color='#4a9b7f'">Crea una aquí</button></p>
+            </div>
+
+            <div style="text-align: center; margin-top: 1rem;">
+                <button type="button" id="btnLimpiarDatos" style="background: none; border: none; color: #6b7f76; font-size: 0.8rem; cursor: pointer; text-decoration: underline; transition: color 0.2s;" onmouseover="this.style.color='#e05252'" onmouseout="this.style.color='#6b7f76'">🗑️ Limpiar Datos</button>
+            </div>
 
             <p class="form-footer">© 2026 Vet-Care · Clínica Veterinaria</p>
         </div>
     </div>
 
     <script>
-        // Mostrar / ocultar contraseña
-        document.getElementById('togglePass').addEventListener('click', function () {
-            const input = document.getElementById('contrasena');
-            const visible = input.type === 'text';
-            input.type = visible ? 'password' : 'text';
-            this.textContent = visible ? '👁️' : '🙈';
-        });
-
-        // Credenciales por defecto en LocalStorage
-        if (!localStorage.getItem('vc_usuarios')) {
-            localStorage.setItem('vc_usuarios', JSON.stringify([
-                { usuario: 'admin', contrasena: '1234' }
-            ]));
-        }
-
-        // Submit
-        document.getElementById('formLogin').addEventListener('submit', function (e) {
-            e.preventDefault();
-
-            const inputUsuario = document.getElementById('usuario');
-            const inputClave   = document.getElementById('contrasena');
-            const errUsuario   = document.getElementById('err-usuario');
-            const errClave     = document.getElementById('err-contrasena');
-            const alertError   = document.getElementById('alertError');
-            let valido = true;
-
-            [inputUsuario, inputClave].forEach(i => i.classList.remove('error-input'));
-            [errUsuario, errClave].forEach(el => el.classList.remove('visible'));
-            alertError.classList.remove('visible');
-
-            if (!inputUsuario.value.trim()) {
-                inputUsuario.classList.add('error-input');
-                errUsuario.classList.add('visible');
-                valido = false;
-            }
-            if (!inputClave.value.trim()) {
-                inputClave.classList.add('error-input');
-                errClave.classList.add('visible');
-                valido = false;
-            }
-            if (!valido) return;
-
-            const usuarios = JSON.parse(localStorage.getItem('vc_usuarios') || '[]');
-            const match = usuarios.find(
-                u => u.usuario === inputUsuario.value.trim() &&
-                     u.contrasena === inputClave.value
-            );
-
-            if (match) {
-                localStorage.setItem('vc_sesion', JSON.stringify({ usuario: match.usuario }));
-                window.location.href = 'index.html';
-            } else {
-                alertError.classList.add('visible');
-                inputClave.value = '';
-                inputClave.focus();
-            }
-        });
+        // Todas las funciones de login están centralizadas en main.js
     </script>
 </body>
 </html>
