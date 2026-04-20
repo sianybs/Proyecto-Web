@@ -6,6 +6,7 @@
     <title>Vet-Care | Registro de Dueños</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="css/style.css">
+    <script src="js/main.js"></script>
 </head>
 
 <body>
@@ -56,23 +57,23 @@
                 <div class="row g-3">
                     <div class="col-md-6">
                         <label for="id_dueno">Identificación (ID)</label>
-                        <input type="text" id="id_dueno" class="form-control" placeholder="Ej: 601230456" required>
+                        <input type="text" id="id_dueno" class="form-control" placeholder="Ej: 601230456">
                     </div>
                     <div class="col-md-6">
                         <label for="nombre_dueno">Nombre Completo</label>
-                        <input type="text" id="nombre_dueno" class="form-control" placeholder="Nombre y Apellidos" required>
+                        <input type="text" id="nombre_dueno" class="form-control" placeholder="Nombre y Apellidos">
                     </div>
                     <div class="col-md-6">
                         <label for="tel_dueno">Teléfono</label>
-                        <input type="tel" id="tel_dueno" class="form-control" placeholder="8888-8888" required>
+                        <input type="tel" id="tel_dueno" class="form-control" placeholder="8888-8888">
                     </div>
                     <div class="col-md-6">
                         <label for="correo_dueno">Correo Electrónico</label>
-                        <input type="email" id="correo_dueno" class="form-control" placeholder="ejemplo@correo.com" required>
+                        <input type="email" id="correo_dueno" class="form-control" placeholder="ejemplo@correo.com">
                     </div>
                     <div class="col-12">
                         <label for="direccion_dueno">Dirección</label>
-                        <input type="text" id="direccion_dueno" class="form-control" placeholder="Provincia, cantón, distrito..." required>
+                        <input type="text" id="direccion_dueno" class="form-control" placeholder="Provincia, cantón, distrito...">
                     </div>
                     <div class="col-12 text-center mt-4">
                         <button type="submit" class="btn btn-primary px-5">Guardar Dueño</button>
@@ -117,60 +118,12 @@
     </footer>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="js/main.js"></script>
     <script>
-        // ── Cargar tabla al iniciar ──
-        window.addEventListener('load', cargarTabla);
-
-        function cargarTabla(filtro = '') {
-            const duenos = JSON.parse(localStorage.getItem('vc_duenos') || '[]');
-            const tbody  = document.getElementById('bodyDuenos');
-            const sinReg = document.getElementById('sinRegistros');
-            tbody.innerHTML = '';
-
-            const filtrados = duenos.filter(d =>
-                d.nombre.toLowerCase().includes(filtro.toLowerCase()) ||
-                d.id.includes(filtro) ||
-                d.correo.toLowerCase().includes(filtro.toLowerCase())
-            );
-
-            if (filtrados.length === 0) {
-                tbody.innerHTML = `<tr><td colspan="5" class="text-center text-muted py-4">No hay resultados.</td></tr>`;
-                return;
-            }
-
-            filtrados.forEach(d => {
-                tbody.innerHTML += `
-                    <tr>
-                        <td>${d.id}</td>
-                        <td>${d.nombre}</td>
-                        <td>${d.tel}</td>
-                        <td>${d.correo}</td>
-                        <td>${d.direccion}</td>
-                    </tr>`;
-            });
+        // Verificar sesión
+        if (!localStorage.getItem('vc_sesion')) {
+            window.location.href = 'login.html';
         }
-
-        // ── Buscar ──
-        document.getElementById('buscar_dueno').addEventListener('input', function () {
-            cargarTabla(this.value);
-        });
-
-        // ── Guardar dueño ──
-        document.getElementById('formDuenos').addEventListener('submit', function (e) {
-            e.preventDefault();
-            const duenos = JSON.parse(localStorage.getItem('vc_duenos') || '[]');
-            const nuevo = {
-                id:        document.getElementById('id_dueno').value.trim(),
-                nombre:    document.getElementById('nombre_dueno').value.trim(),
-                tel:       document.getElementById('tel_dueno').value.trim(),
-                correo:    document.getElementById('correo_dueno').value.trim(),
-                direccion: document.getElementById('direccion_dueno').value.trim()
-            };
-            duenos.push(nuevo);
-            localStorage.setItem('vc_duenos', JSON.stringify(duenos));
-            this.reset();
-            cargarTabla();
-        });
     </script>
 </body>
 </html>

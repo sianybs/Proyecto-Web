@@ -1,33 +1,127 @@
-<main class="container my-5">
-    <div class="d-flex justify-content-between align-items-center mb-4">
-        <h2>Gestión de Citas</h2>
-        <a href="index.html" class="btn btn-outline-secondary btn-sm">Volver al Inicio</a>
-    </div>
-    
-    <div class="alert alert-warning">Sección en construcción: Calendario y Expedientes.</div>
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vet-Care | Gestión de Citas</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="css/style.css">
+</head>
 
-    <div class="card shadow-sm p-4" style="border-radius: 40px;">
-        <h3 class="text-center mb-4">Nueva Cita Veterinaria</h3>
-        <form id="formCitas">
-            <div class="row g-3">
-                <div class="col-md-12">
-                    <label>Seleccionar Paciente</label>
-                    <select id="select_mascota" class="form-control" required>
-                        <option value="">Buscar mascota...</option>
-                    </select>
-                </div>
-                <div class="col-md-6">
-                    <label>Fecha</label>
-                    <input type="date" id="fecha_cita" class="form-control" required>
-                </div>
-                <div class="col-md-6">
-                    <label>Hora</label>
-                    <input type="time" id="hora_cita" class="form-control" required>
-                </div>
-                <div class="col-12 text-center mt-4">
-                    <button type="submit" class="btn btn-primary px-5 shadow-sm">Agendar Cita</button>
-                </div>
+<body>
+
+    <!-- ── Navbar ── -->
+    <nav class="navbar navbar-expand-lg sticky-top py-3">
+        <div class="container">
+            <a class="navbar-brand d-flex align-items-center" href="index.html">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 380 100" height="36" style="margin-right:6px;">
+                    <circle cx="50" cy="50" r="44" fill="#4a9b7f"/>
+                    <rect x="38" y="22" width="24" height="56" rx="7" fill="white"/>
+                    <rect x="22" y="38" width="56" height="24" rx="7" fill="white"/>
+                    <ellipse cx="50" cy="52" rx="9" ry="7" fill="#4a9b7f"/>
+                    <ellipse cx="37" cy="42" rx="5" ry="4" fill="#4a9b7f"/>
+                    <ellipse cx="46" cy="37" rx="5" ry="4" fill="#4a9b7f"/>
+                    <ellipse cx="56" cy="37" rx="5" ry="4" fill="#4a9b7f"/>
+                    <ellipse cx="65" cy="42" rx="5" ry="4" fill="#4a9b7f"/>
+                    <text x="112" y="60" font-family="Georgia,serif" font-size="42" font-weight="700" fill="#1e2d27">Vet-Care</text>
+                    <text x="113" y="80" font-family="Arial,sans-serif" font-size="11" fill="#6b7f76" letter-spacing="3.5">CLÍNICA VETERINARIA</text>
+                    <line x1="113" y1="87" x2="358" y2="87" stroke="#d4e8df" stroke-width="1.5" stroke-linecap="round"/>
+                </svg>
+            </a>
+            <button class="navbar-toggler border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item"><a class="nav-link px-3" href="index.html">Inicio</a></li>
+                    <li class="nav-item"><a class="nav-link px-3" href="duenos.html">Dueños</a></li>
+                    <li class="nav-item"><a class="nav-link px-3" href="mascotas.html">Mascotas</a></li>
+                    <li class="nav-item"><a class="nav-link px-3 active" href="citas.html">Citas</a></li>
+                    <li class="nav-item"><a class="nav-link px-3" href="expediente.html">Expedientes</a></li>
+                </ul>
             </div>
-        </form>
-    </div>
-</main>
+        </div>
+    </nav>
+
+    <!-- ── Contenido principal ── -->
+    <main class="container my-5">
+        <div class="d-flex justify-content-between align-items-center mb-4">
+            <h2>Gestión de Citas</h2>
+            <a href="index.html" class="btn btn-outline-secondary btn-sm">Volver al Inicio</a>
+        </div>
+
+        <!-- __ Formulario de nueva cita __ -->
+        <div class="card shadow-sm p-4 mb-5" style="border-radius: 40px;">
+            <h3 class="text-center mb-4">Agendar Nueva Cita</h3>
+            <form id="formCitas">
+                <div class="row g-3">
+                    <div class="col-md-6">
+                        <label for="select_dueno">Seleccionar Dueño por ID</label>
+                        <select id="select_dueno" class="form-control">
+                            <option value="">-- Seleccione un dueño --</option>
+                        </select>
+                    </div>
+                    <div class="col-md-6">
+                        <label for="select_mascota">Seleccionar Paciente</label>
+                        <select id="select_mascota" class="form-control">
+                            <option value="">-- Seleccione una mascota --</option>
+                        </select>
+                    </div>
+                    <div class="col-md-6">
+                        <label for="fecha_cita">Fecha</label>
+                        <input type="date" id="fecha_cita" class="form-control">
+                    </div>
+                    <div class="col-md-6">
+                        <label for="hora_cita">Hora</label>
+                        <input type="time" id="hora_cita" class="form-control">
+                    </div>
+                    <div class="col-md-12">
+                        <label for="motivo_cita">Motivo de la Cita</label>
+                        <textarea id="motivo_cita" class="form-control" rows="3" placeholder="Ej: Vacunación, Revisión general, etc."></textarea>
+                    </div>
+                    <div class="col-12 text-center mt-4">
+                        <button type="submit" class="btn btn-primary px-5 shadow-sm">Agendar Cita</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+
+        <!-- __ Tabla de citas __ -->
+        <div class="card shadow-sm p-4" style="border-radius: 40px;">
+            <div class="d-flex justify-content-between align-items-center mb-3">
+                <h4 class="mb-0">Citas Agendadas</h4>
+                <input type="text" id="buscar_cita" class="form-control w-auto" placeholder="🔍 Buscar...">
+            </div>
+            <div class="table-responsive">
+                <table class="table table-hover align-middle" id="tablaCitas">
+                    <thead class="table-light">
+                        <tr>
+                            <th>Fecha</th>
+                            <th>Hora</th>
+                            <th>Mascota</th>
+                            <th>Dueño</th>
+                            <th>Motivo</th>
+                            <th>Acciones</th>
+                        </tr>
+                    </thead>
+                    <tbody id="tbody_citas">
+                        <tr>
+                            <td colspan="6" class="text-center text-muted">No hay citas agendadas</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </main>
+
+    <footer class="py-5">
+        <div class="container text-center">
+            <p class="text-muted mb-0 small">&copy; 2026 Vet-Care Clínica Veterinaria</p>
+            <p class="text-muted small">El Roble, Puntarenas</p>
+        </div>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="js/main.js"></script>
+</body>
+</html>

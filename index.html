@@ -37,6 +37,7 @@
                     <li class="nav-item"><a class="nav-link px-3" href="mascotas.html">Mascotas</a></li>
                     <li class="nav-item"><a class="nav-link px-3" href="citas.html">Citas</a></li>
                     <li class="nav-item"><a class="nav-link px-3" href="expediente.html">Expedientes</a></li>
+                    <li class="nav-item"><a class="nav-link px-3" href="#" id="logout">Cerrar Sesión</a></li>
                 </ul>
             </div>
         </div>
@@ -66,23 +67,18 @@
                         <h2 class="mb-4">Centro de Gestión</h2>
                         
                         <ul class="nav nav-pills justify-content-center mb-5" id="pills-tab" role="tablist">
-                            <li class="nav-item" role="presentation">
-                                <button class="nav-link active rounded-pill px-4 me-2" data-bs-toggle="pill" data-bs-target="#pills-duenos">Dueños</button>
-                            </li>
-                            <li class="nav-item" role="presentation">
-                                <button class="nav-link rounded-pill px-4 me-2" data-bs-toggle="pill" data-bs-target="#pills-mascotas">Mascotas</button>
-                            </li>
-                            <li class="nav-item" role="presentation">
-                                <button class="nav-link rounded-pill px-4 me-2" data-bs-toggle="pill" data-bs-target="#pills-citas">Citas</button>
-                            </li>
-                            <li class="nav-item" role="presentation">
-                                <button class="nav-link rounded-pill px-4" data-bs-toggle="pill" data-bs-target="#pills-expediente">Expedientes</button>
-                            </li>
+                            <a href="duenos.html" class="btn btn-primary shadow-sm">Dueños</a>
+
+                            <a href="mascotas.html" class="btn btn-primary shadow-sm">Mascotas</a>
+
+                            <a href="citas.html" class="btn btn-primary shadow-sm">Citas</a>
+
+                            <a href="expediente.html" class="btn btn-primary shadow-sm">Expedientes</a>
                         </ul>
 
                         <div class="tab-content" id="pills-tabContent">
                             <div class="tab-pane fade show active" id="pills-duenos">
-                                <p class="text-muted">Administra la base de datos de propietarios y sus contactos.</p>
+                                <p class="text-muted">Gestiona tus datos y los de tus mascotas</p>
                                 <a href="duenos.html" class="btn btn-primary btn-lg shadow-sm">Abrir Registro de Dueños</a>
                             </div>
                             
@@ -113,5 +109,18 @@
             <p class="text-muted small">El Roble, Puntarenas</p>
         </div>
     </footer>
+
+    <script>
+        // Verificar sesión
+        if (!localStorage.getItem('vc_sesion')) {
+            window.location.href = 'login.html';
+        }
+
+        // Logout
+        document.getElementById('logout').addEventListener('click', () => {
+            localStorage.removeItem('vc_sesion');
+            window.location.href = 'login.html';
+        });
+    </script>
 </body>
 </html>
