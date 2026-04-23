@@ -7,7 +7,7 @@ function inyectarUI() {
     // Contenedor de toasts (esquina superior derecha)
     const toastContainer = document.createElement('div');
     toastContainer.id = 'vc-toast-container';
-    toastContainer.style.cssText = 'position:fixed;top:80px;right:20px;z-index:9999;display:flex;flex-direction:column;gap:10px;';
+    toastContainer.style.cssText = 'position:fixed;top:80px;right:20px;z-index:99999;display:flex;flex-direction:column;gap:10px;';
     document.body.appendChild(toastContainer);
 
     // Modal de confirmación reutilizable
@@ -641,11 +641,15 @@ document.addEventListener('DOMContentLoaded', () => {
 
             usuarios.push({ usuario: inputUsuarioReg.value.trim(), contrasena: inputClaveReg.value });
             guardarLista('vc_usuarios', usuarios);
-            mostrarToast('Cuenta creada exitosamente. Ahora inicia sesión.', 'success');
+           mostrarToast('Cuenta creada exitosamente. Ahora inicia sesión.', 'success');
             formRegistro.reset();
-            alternarFormularios();
-        });
-    }
+
+            setTimeout(() => {
+                alternarFormularios();
+            
+            },500);
+                  });
+                }
 
     // Toggle contraseña registro
     document.getElementById('togglePassReg')?.addEventListener('click', function () {
@@ -752,4 +756,6 @@ window.addEventListener('load', () => {
 
 if (!localStorage.getItem('vc_sesion') && !window.location.href.includes('login.html')) {
     window.location.href = 'login.html';
+
 }
+
