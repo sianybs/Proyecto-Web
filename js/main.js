@@ -531,7 +531,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const input   = document.getElementById('contrasena');
         const visible = input.type === 'text';
         input.type    = visible ? 'password' : 'text';
-        this.textContent = visible ? '👁️' : '🙈';
+        this.textContent = visible ? '🔒' : '🔓';
     });
 
     // Submit login
@@ -652,13 +652,13 @@ document.addEventListener('DOMContentLoaded', () => {
         const input = document.getElementById('contrasenaReg');
         const visible = input.type === 'text';
         input.type = visible ? 'password' : 'text';
-        this.textContent = visible ? '👁️' : '🙈';
+        this.textContent = visible ? '🔒' : '🔓';
     });
     document.getElementById('togglePassConfirmar')?.addEventListener('click', function () {
         const input = document.getElementById('confirmarContrasena');
         const visible = input.type === 'text';
         input.type = visible ? 'password' : 'text';
-        this.textContent = visible ? '👁️' : '🙈';
+        this.textContent = visible ? '🔒' : '🔓';
     });
 });
 
