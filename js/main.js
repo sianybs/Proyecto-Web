@@ -1,6 +1,6 @@
 // --- SISTEMA DE NOTIFICACIONES ---
 
-// Inyectar el contenedor de toasts y modal de confirmación en el DOM
+// Inyectar el contenedor de toasts en el DOM
 function inyectarUI() {
     if (document.getElementById('vc-toast-container')) return;
 
@@ -9,29 +9,6 @@ function inyectarUI() {
     toastContainer.id = 'vc-toast-container';
     toastContainer.style.cssText = 'position:fixed;top:80px;right:20px;z-index:99999;display:flex;flex-direction:column;gap:10px;';
     document.body.appendChild(toastContainer);
-
-    // Modal de confirmación reutilizable
-    const modalHTML = `
-    <div class="modal fade" id="vcModalConfirm" tabindex="-1" aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered modal-sm">
-            <div class="modal-content" style="border-radius:24px;border:none;box-shadow:0 16px 48px rgba(74,155,127,0.2);">
-                <div class="modal-body text-center p-4">
-                    <div style="width:52px;height:52px;border-radius:50%;background:#fef7dd;display:flex;align-items:center;justify-content:center;margin:0 auto 1rem;">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="26" height="26" fill="#c8960c" viewBox="0 0 16 16">
-                            <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z"/>
-                            <path d="M7.002 11a1 1 0 1 1 2 0 1 1 0 0 1-2 0zM7.1 4.995a.905.905 0 1 1 1.8 0l-.35 3.507a.552.552 0 0 1-1.1 0L7.1 4.995z"/>
-                        </svg>
-                    </div>
-                    <p id="vcModalConfirmMsg" style="font-size:.95rem;font-weight:500;color:#1e2d27;margin-bottom:1.5rem;"></p>
-                    <div class="d-flex gap-2 justify-content-center">
-                        <button id="vcModalConfirmNo" class="btn btn-outline-secondary btn-sm px-4" data-bs-dismiss="modal">Cancelar</button>
-                        <button id="vcModalConfirmSi" class="btn btn-sm px-4" style="background:#e05252;color:white;border:none;border-radius:999px;">Confirmar</button>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>`;
-    document.body.insertAdjacentHTML('beforeend', modalHTML);
 }
 
 // Mostrar un toast
@@ -95,28 +72,58 @@ function mostrarToast(mensaje, tipo = 'success') {
 // Mostrar modal de confirmación
 // Retorna una Promise que resuelve true (confirmar) o false (cancelar)
 function mostrarConfirm(mensaje) {
-    inyectarUI();
     return new Promise((resolve) => {
-        document.getElementById('vcModalConfirmMsg').textContent = mensaje;
-        const modal = new bootstrap.Modal(document.getElementById('vcModalConfirm'));
-        modal.show();
+        // Eliminar overlay previo si existe
+        const previo = document.getElementById('vc-confirm-overlay');
+        if (previo) previo.remove();
 
-        const btnSi = document.getElementById('vcModalConfirmSi');
-        const btnNo = document.getElementById('vcModalConfirmNo');
+        const overlay = document.createElement('div');
+        overlay.id = 'vc-confirm-overlay';
+        overlay.style.cssText = `
+            position:fixed;inset:0;z-index:999999;
+            background:rgba(0,0,0,0.45);
+            display:flex;align-items:center;justify-content:center;
+            animation:vcFadeIn .2s ease;
+        `;
 
-        // Clonar para eliminar listeners previos
-        const nuevoSi = btnSi.cloneNode(true);
-        const nuevoNo = btnNo.cloneNode(true);
-        btnSi.replaceWith(nuevoSi);
-        btnNo.replaceWith(nuevoNo);
+        overlay.innerHTML = `
+            <style>
+                @keyframes vcFadeIn { from{opacity:0} to{opacity:1} }
+                @keyframes vcSlideUp { from{opacity:0;transform:translateY(16px)} to{opacity:1;transform:translateY(0)} }
+            </style>
+            <div style="
+                background:white;border-radius:24px;padding:2rem 2rem 1.75rem;
+                max-width:360px;width:90%;text-align:center;
+                box-shadow:0 20px 60px rgba(0,0,0,0.2);
+                animation:vcSlideUp .25s ease;
+                font-family:'Segoe UI',Arial,sans-serif;
+            ">
+                <div style="width:52px;height:52px;border-radius:50%;background:#fef7dd;display:flex;align-items:center;justify-content:center;margin:0 auto 1rem;">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="26" height="26" fill="#c8960c" viewBox="0 0 16 16">
+                        <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z"/>
+                        <path d="M7.002 11a1 1 0 1 1 2 0 1 1 0 0 1-2 0zM7.1 4.995a.905.905 0 1 1 1.8 0l-.35 3.507a.552.552 0 0 1-1.1 0L7.1 4.995z"/>
+                    </svg>
+                </div>
+                <p id="vc-confirm-msg" style="font-size:.95rem;font-weight:500;color:#1e2d27;margin:0 0 1.5rem;line-height:1.5;">${mensaje}</p>
+                <div style="display:flex;gap:10px;justify-content:center;">
+                    <button id="vc-confirm-no" style="background:white;color:#6b7f76;border:1.5px solid #c5d4ce;border-radius:999px;padding:9px 26px;font-size:.9rem;font-weight:500;cursor:pointer;font-family:'Segoe UI',Arial,sans-serif;transition:all .2s;">Cancelar</button>
+                    <button id="vc-confirm-si" style="background:#e05252;color:white;border:none;border-radius:999px;padding:9px 26px;font-size:.9rem;font-weight:500;cursor:pointer;font-family:'Segoe UI',Arial,sans-serif;transition:all .2s;">Confirmar</button>
+                </div>
+            </div>
+        `;
 
-        document.getElementById('vcModalConfirmSi').addEventListener('click', () => {
-            modal.hide();
-            resolve(true);
-        });
-        document.getElementById('vcModalConfirmNo').addEventListener('click', () => {
-            resolve(false);
-        });
+        document.body.appendChild(overlay);
+
+        const cerrar = (resultado) => {
+            overlay.style.animation = 'vcFadeIn .15s ease reverse';
+            setTimeout(() => overlay.remove(), 150);
+            resolve(resultado);
+        };
+
+        document.getElementById('vc-confirm-si').addEventListener('click', () => cerrar(true));
+        document.getElementById('vc-confirm-no').addEventListener('click', () => cerrar(false));
+        // Cerrar al hacer clic en el fondo
+        overlay.addEventListener('click', (e) => { if (e.target === overlay) cerrar(false); });
     });
 }
 
@@ -758,4 +765,3 @@ if (!localStorage.getItem('vc_sesion') && !window.location.href.includes('login.
     window.location.href = 'login.html';
 
 }
-
